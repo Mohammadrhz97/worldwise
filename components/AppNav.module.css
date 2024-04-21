@@ -10,7 +10,8 @@
   border-radius: 7px;
 }
 
-.nav a:link .nav a:visited {
+.nav a:link,
+.nav a:visited {
   display: block;
   color: inherit;
   text-decoration: none;

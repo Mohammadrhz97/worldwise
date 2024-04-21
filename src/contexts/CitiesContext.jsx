@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const BASE_URL = "http://localhost:9000";
 
@@ -60,7 +54,7 @@ function reducer(state, action) {
 }
 
 function CitiesProvider({ children }) {
-  const [{ cities, isLoading, currentCity, error }, dispatch] = useReducer(
+  const [{ cities, isLoading, currentCity }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -112,37 +106,37 @@ function CitiesProvider({ children }) {
         payload: "There was an error creating city...",
       });
     }
-
-    async function deleteCities(id) {
-      dispatch({ type: "loading" });
-      try {
-        await fetch(`${BASE_URL}/cities/${id}`, {
-          method: "DELETE",
-        });
-        dispatch({ type: "city/deleted", payload: id });
-      } catch {
-        dispatch({
-          type: "rejected",
-          payload: "There was an error creating city...",
-        });
-      }
-    }
-
-    return (
-      <CitiesContext.Provider
-        value={{
-          cities,
-          isLoading,
-          currentCity,
-          getcity,
-          createCities,
-          deleteCities,
-        }}
-      >
-        {children}
-      </CitiesContext.Provider>
-    );
   }
+
+  async function deleteCities(id) {
+    dispatch({ type: "loading" });
+    try {
+      await fetch(`${BASE_URL}/cities/${id}`, {
+        method: "DELETE",
+      });
+      dispatch({ type: "city/deleted", payload: id });
+    } catch {
+      dispatch({
+        type: "rejected",
+        payload: "There was an error creating city...",
+      });
+    }
+  }
+
+  return (
+    <CitiesContext.Provider
+      value={{
+        cities,
+        isLoading,
+        currentCity,
+        getcity,
+        createCities,
+        deleteCities,
+      }}
+    >
+      {children}
+    </CitiesContext.Provider>
+  );
 }
 
 function useCities() {
